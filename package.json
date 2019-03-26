@@ -86,7 +86,7 @@
   "scripts": {
     "postinstall": "bower install",
     "test": "./node_modules/.bin/karma start",
-    "build": "rimraf dist && nice webpack --config webpack-production.config.js --bail --progress --profile",
+    "build": "rimraf dist && webpack --config webpack-production.config.js --bail --progress --profile",
     "server-inline": "webpack-dev-server --config webpack-dev-server.config.js --history-api-fallback --inline --progress --port 9000",
     "server": "webpack-dev-server --config webpack-dev-server.config.js --history-api-fallback --progress --port 9000",
     "server-prod": "webpack-dev-server --config webpack-production.config.js --history-api-fallback --inline --progress --port 9000",
