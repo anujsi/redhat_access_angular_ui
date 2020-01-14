@@ -40,4 +40,4 @@ div#markdownCommentSection.markdown-editor-container
             ng-class='{"expanded": DiscussionService.commentTextBoxEnlargen}',
             ng-blur='shouldTextboxMinimize()')
         div#markdownCommentPreview.markdown-preview.well.well-sm(ng-if='isPreview') 
-            div(ng-bind-html='markdownToHTML(CaseService.commentText)')
+            div(ng-bind-html='previewMDText(CaseService.commentText)')

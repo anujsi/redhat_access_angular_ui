@@ -50,7 +50,12 @@ const markdownToHTML = (markdownText, options, callback) => {
     if (isEmpty(markdownText)) {
         return markdownText;
     } else if (marked) {
-        return marked(markdownText, assign({}, defaultMarkdownOptions, options), callback);
+        const renderer = new marked.Renderer();
+        renderer.code = function (code, infostring, escaped) {
+            return `<pre><code>${htmlEntitiesEncode(code)}</code></pre>`;
+
+        }
+        return marked(markdownText, assign({}, defaultMarkdownOptions, options, { renderer: renderer }), callback);
     }
 }
 
@@ -63,10 +68,16 @@ const santitizeHTML = (markdownText, config) => {
     }
 }
 
+const htmlEntitiesEncode = (text) => {
+    if (!isString(text) || isEmpty(text)) return text;
+    return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 module.exports = {
   versionSort,
   versionSorter,
   getRedhatDotComHost,
   markdownToHTML,
-  santitizeHTML
+  santitizeHTML,
+  htmlEntitiesEncode
 }
