@@ -12,9 +12,14 @@
 
 	.discussion-element{
         margin-top: 10px;
-     blockquote {
-        border-left: 5px solid #C0C0C0 !important;
-        display: flex;
+      .markdown-comment{
+        ul {
+            line-height: 10px;
+        }
+        blockquote {
+            border-left: 5px solid #C0C0C0 !important;
+            display: flex;
+        }
       }
 	}
 	textarea.comment {
@@ -252,6 +257,10 @@
 
 .margin-left-auto {
     margin-left: auto !important;
+}
+
+.font-size-13{
+    font-size: 13px;
 }
 
 .color-blue {

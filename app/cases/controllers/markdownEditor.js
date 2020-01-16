@@ -1,10 +1,10 @@
 'use strict';
 import isEmpty from 'lodash/isEmpty';
-import { markdownToHTML } from '../../shared/utils';
+import { markdownToHTML, htmlEntitiesEncode } from '../../shared/utils';
 import { UndoRedoLogger } from './undoRedoLogger';
 
 export default class MarkdownEditor {
-    constructor($scope, CaseService, DiscussionService, CASE_EVENTS) {
+    constructor($scope, CaseService, DiscussionService, CASE_EVENTS, LinkifyService) {
         'ngInject';
         $scope.CaseService = CaseService;
         $scope.DiscussionService = DiscussionService;
@@ -95,6 +95,19 @@ export default class MarkdownEditor {
 
         $scope.getMarkdownTextEditor = function () {
             return document && document.getElementById('markdownCaseCommentBox');
+        }
+
+        $scope.previewMDText = function (mdText) {
+            try {
+                const linkifiedText = htmlEntitiesEncode(mdText);
+                // linkify case and bugzilla
+                let linkifiedCaseIds = LinkifyService.linkifyWithCaseIDs(linkifiedText);
+                let linkifiedBZIds = LinkifyService.linkifyBZIDs(linkifiedCaseIds);
+                return markdownToHTML(linkifiedBZIds);
+            } catch(error) {
+                console.log('error in preview markdown text.');
+                return mdText;
+            }
         }
 
         $scope.insertText = function (template) {

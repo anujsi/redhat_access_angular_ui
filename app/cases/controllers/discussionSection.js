@@ -5,7 +5,7 @@ import findIndex from 'lodash/findIndex'
 import orderBy from 'lodash/orderBy';
 import reverse from 'lodash/reverse';
 import filter from 'lodash/filter';
-import { markdownToHTML, santitizeHTML } from '../../shared/utils';
+import { markdownToHTML, santitizeHTML, htmlEntitiesEncode } from '../../shared/utils';
 
 export default class DiscussionSection {
     constructor($scope, $timeout, AttachmentsService, CaseService, DiscussionService, securityService, $stateParams, AlertService, $uibModal,
@@ -50,6 +50,14 @@ export default class DiscussionSection {
                 return santitizeHTML(markdownToHTML(element));
             } else {
                 return element;
+            }
+        }
+
+        $scope.isMarkdownComment = (contentType) => {
+            if (DiscussionService.getIsCommentMarkdownEnabled() && contentType === 'markdown') {
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -353,7 +361,7 @@ export default class DiscussionSection {
                 if (RHAUtils.isNotEmpty(comment.text)) {
                     let linkifiedText;
                     if (comment.content_type === 'markdown' && DiscussionService.getIsCommentMarkdownEnabled()) {
-                        linkifiedText = comment.text;
+                        linkifiedText = htmlEntitiesEncode(comment.text);
                     } else {
                         try {
                             linkifiedText = $filter('linky')(comment.text);
