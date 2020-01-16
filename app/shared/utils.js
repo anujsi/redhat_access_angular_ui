@@ -52,8 +52,7 @@ const markdownToHTML = (markdownText, options, callback) => {
     } else if (marked) {
         const renderer = new marked.Renderer();
         renderer.code = function (code, infostring, escaped) {
-            return `<pre><code>${htmlEntitiesEncode(code)}</code></pre>`;
-
+           return `<pre><code>${htmlEntitiesEncode(code)}</code></pre>`;
         }
         return marked(markdownText, assign({}, defaultMarkdownOptions, options, { renderer: renderer }), callback);
     }
@@ -70,7 +69,8 @@ const santitizeHTML = (markdownText, config) => {
 
 const htmlEntitiesEncode = (text) => {
     if (!isString(text) || isEmpty(text)) return text;
-    return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const tagsRegex = /(<)(.*?)(>)/g;
+    return String(text).replace(tagsRegex, '&lt;$2&gt;');
 }
 
 module.exports = {

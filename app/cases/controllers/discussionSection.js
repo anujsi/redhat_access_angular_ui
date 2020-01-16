@@ -53,6 +53,14 @@ export default class DiscussionSection {
             }
         }
 
+        $scope.isMarkdownComment = (contentType) => {
+            if (DiscussionService.getIsCommentMarkdownEnabled() && contentType === 'markdown') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         $scope.scrollToElementById = (id) => {
             // In IE, this can get called before all the elements have been rendered
             // in the ng-repeat list. Therefore timeout is needed because $timeout makes sure
