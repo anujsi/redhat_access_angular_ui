@@ -78,7 +78,7 @@ const htmlEntitiesEncode = (text) => {
 }
 
 const encodeAngularBrackets = (text) => {
-    return text && String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return isString(text) ? String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
 };
 
 module.exports = {
