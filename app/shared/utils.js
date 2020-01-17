@@ -52,7 +52,11 @@ const markdownToHTML = (markdownText, options, callback) => {
     } else if (marked) {
         const renderer = new marked.Renderer();
         renderer.code = function (code, infostring, escaped) {
-           return `<pre><code>${htmlEntitiesEncode(code)}</code></pre>`;
+            // reason for encodeAngularBrackets, it is failing for some code text like
+            // ~~~
+            // <tag1<tag2> <hah<h<h<h>
+            // ~~~
+           return `<pre><code>${htmlEntitiesEncode(encodeAngularBrackets(code))}</code></pre>`;
         }
         return marked(markdownText, assign({}, defaultMarkdownOptions, options, { renderer: renderer }), callback);
     }
@@ -73,11 +77,16 @@ const htmlEntitiesEncode = (text) => {
     return String(text).replace(tagsRegex, '&lt;$2&gt;');
 }
 
+const encodeAngularBrackets = (text) => {
+    return isString(text) ? String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+};
+
 module.exports = {
   versionSort,
   versionSorter,
   getRedhatDotComHost,
   markdownToHTML,
   santitizeHTML,
-  htmlEntitiesEncode
+  htmlEntitiesEncode,
+  encodeAngularBrackets
 }
