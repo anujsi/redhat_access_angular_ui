@@ -394,7 +394,7 @@ export default class DiscussionSection {
             const caseNumber = CaseService.kase.case_number;
             const id = element.uuid;
 
-            hydraAttachments.downloadAttachmentS3(caseNumber, id, element.file_name, true)
+            hydraAttachments.downloadAttachmentS3(caseNumber, id, element.file_name, false)
                 .catch((error) => {
                     AlertService.addDangerMessage(gettextCatalog.getString(`Could not download {{filename}}: {{error}}`, {
                         filename: element.file_name,
